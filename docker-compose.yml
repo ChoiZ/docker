@@ -1,0 +1,21 @@
+version: '2'
+services:
+    code:
+        image: choiz/code
+        volumes:
+            - /home/choiz/repos/docker/web/www:/var/www
+        tty: true
+    php:
+        image: choiz/php-fpm:7.0
+        volumes_from:
+            - code
+    web:
+        image: choiz/apache:2.4
+        ports:
+            - 80:80
+        environment:
+            FPM_HOST: php:9000
+        volumes_from:
+            - code
+        links:
+            - php
